@@ -53,6 +53,22 @@
     </form>
 
 <script>
+function calcTotal() {
+  const rows = document.querySelectorAll("#orderTable tr");
+  let total = 0;
+
+  rows.forEach((row, index) => {
+    if (index === 0) return; // 跳過標題列
+    const price = parseInt(row.children[1].textContent);
+    const qty = parseInt(row.children[2].children[0].value);
+    const subtotal = price * qty;
+    row.children[3].textContent = subtotal;
+    total += subtotal;
+  });
+
+  document.getElementById("total").textContent = total;
+}
+
 function handleSubmit(event) {
   event.preventDefault();
 
@@ -64,7 +80,8 @@ function handleSubmit(event) {
   const quantities = [];
   const subtotals = [];
 
-  rows.forEach(row => {
+  rows.forEach((row, index) => {
+    if (index === 0) return;
     const item = row.children[0].textContent;
     const qty = parseInt(row.children[2].children[0].value);
     const subtotal = row.children[3].textContent;
@@ -89,7 +106,7 @@ function handleSubmit(event) {
   })
   .then(res => res.text())
   .then(msg => {
-    alert("表單已送出！請繳錢給麗晴！歡迎line pay!");
+    alert("表單已送出！");
     document.getElementById("orderForm").reset();
     calcTotal();
   })
