@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>水餃團購表單</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; max-width: 800px; margin: auto; }
+        h2 { color: #333366; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #999; padding: 8px; text-align: center; }
+        th { background-color: #f2f2f2; }
+        input[type="number"] { width: 60px; }
+        input[type="text"] { width: 200px; }
+        .total { font-weight: bold; color: #d32f2f; }
+        .btn-group { margin-top: 20px; }
+        button { padding: 10px 20px; margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <h2>水餃團購表單</h2>
+    <form id="orderForm" onsubmit="handleSubmit(event)">
+        <label>填單人姓名：<input type="text" id="name" required></label><br><br>
+        <label>聯絡方式：<input type="text" id="contact" required></label>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>品項</th>
+                    <th>單價 (每包50顆)</th>
+                    <th>訂購數量</th>
+                    <th>小計</th>
+                </tr>
+            </thead>
+            <tbody id="orderTable">
+                <tr><td>高麗菜蝦仁</td><td>280</td><td><input type="number" min="0" value="0" onchange="calcTotal()"></td><td class="subtotal">0</td></tr>
+                <tr><td>韭菜蝦仁</td><td>280</td><td><input type="number" min="0" value="0" onchange="calcTotal()"></td><td class="subtotal">0</td></tr>
+                <tr><td>香菜蝦仁</td><td>360</td><td><input type="number" min="0" value="0" onchange="calcTotal()"></td><td class="subtotal">0</td></tr>
+                <tr><td>香菜豬肉</td><td>260</td><td><input type="number" min="0" value="0" onchange="calcTotal()"></td><td class="subtotal">0</td></tr>
+                <tr><td>高麗菜豬肉</td><td>170</td><td><input type="number" min="0" value="0" onchange="calcTotal()"></td><td class="subtotal">0</td></tr>
+                <tr><td>韭菜豬肉</td><td>170</td><td><input type="number" min="0" value="0" onchange="calcTotal()"></td><td class="subtotal">0</td></tr>
+                <tr><td>大白菜豬肉</td><td>180</td><td><input type="number" min="0" value="0" onchange="calcTotal()"></td><td class="subtotal">0</td></tr>
+                <tr><td>高麗菜素食</td><td>170</td><td><input type="number" min="0" value="0" onchange="calcTotal()"></td><td class="subtotal">0</td></tr>
+            </tbody>
+        </table>
+
+        <h3 class="total">總金額：<span id="total">0</span> 元</h3>
+
+        <div class="btn-group">
+            <button type="submit">送出表單</button>
+            <button type="button" onclick="window.print()">列印表單</button>
+        </div>
+    </form>
+
+    <script>
+        function calcTotal() {
+            let rows = document.querySelectorAll("#orderTable tr");
+            let total = 0;
+            rows.forEach(row => {
+                let price = parseInt(row.children[1].textContent);
+                let qty = parseInt(row.children[2].children[0].value);
+                let subtotal = price * qty;
+                row.children[3].textContent = subtotal;
+                total += subtotal;
+            });
+            document.getElementById("total").textContent = total;
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert("表單已送出！請記得另存或列印備份。");
+        }
+    </script>
+</body>
+</html>
